@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 # ----------- CONSTANTS -----------
 # Grid parameters
 H = -0.0001
-ε = 0.001
+ε = 0.01
 # Parameters
 Re_m = 10
 Re_n = 5
-Da = 0.07
+Da = 0.05
 γ = 20
 β = 2
 B = 15
@@ -59,8 +59,8 @@ class var_vector:
 
 
 class parameter:
-    η_1 = 0.10323
-    η_2 = 0.64076
+    η_1 = 0.06
+    η_2 = 0.38
 
 
 
@@ -113,6 +113,12 @@ class shoot:
         self.vec.θ = self.vec.θ + H/6*(k1.θ + 2*k2.θ + 2*k3.θ + k4.θ)
         self.vec.φ = self.vec.φ + H/6*(k1.φ + 2*k2.φ + 2*k3.φ + k4.φ)
         self.vec.z = self.vec.z + H
+
+        self.vec1.y = self.vec.y
+        self.vec1.ζ = self.vec.ζ
+        self.vec1.θ = self.vec.θ
+        self.vec1.φ = self.vec.φ
+        self.vec1.z = self.vec.z
     
     
     def count_k_vec(self):
@@ -160,6 +166,16 @@ class shoot:
         self.var_vec.sy_2 = self.var_vec.sy_2 + H/6*(k1.sy_2 + 2*k2.sy_2 + 2*k3.sy_2 + k4.sy_2)
         self.var_vec.z = self.var_vec.z + H
 
+        self.var_vec1.pθ_1 = self.var_vec.pθ_1
+        self.var_vec1.pθ_2 = self.var_vec.pθ_2
+        self.var_vec1.sθ_1 = self.var_vec.sθ_1
+        self.var_vec1.sθ_2 = self.var_vec.sθ_2
+        self.var_vec1.py_1 = self.var_vec.py_1
+        self.var_vec1.py_2 = self.var_vec.py_2
+        self.var_vec1.sy_1 = self.var_vec.sy_1
+        self.var_vec1.sy_2 = self.var_vec.sy_2
+        self.var_vec1.z = self.var_vec.z
+
 
     def count_k_var_vec(self):
         var_vec = self.var_vec1
@@ -188,8 +204,8 @@ class shoot:
         self.W[1][0] = Re_n*var_vec.pθ_1 - var_vec.sθ_1
         self.W[1][1] = Re_n*var_vec.pθ_2 - var_vec.sθ_2
 
-        self.res1.η_1 = self.res.η_1 - 1/(self.W[0][0]*self.W[1][1] - self.W[1][0]*self.W[0][1])*( self.W[1][1]*(Re_m*vec.y - vec.ζ) - self.W[0][1]*(Re_n*vec.θ - vec.φ))
-        self.res1.η_2 = self.res.η_2 - 1/(self.W[0][0]*self.W[1][1] - self.W[1][0]*self.W[0][1])*(-self.W[1][0]*(Re_m*vec.y - vec.ζ) + self.W[0][0]*(Re_n*vec.θ - vec.φ))
+        self.res1.η_1 = self.res1.η_1 - (1/(self.W[0][0]*self.W[1][1] - self.W[1][0]*self.W[0][1]))*( self.W[1][1]*(Re_m*vec.y - vec.ζ) - self.W[0][1]*(Re_n*vec.θ - vec.φ))
+        self.res1.η_2 = self.res1.η_2 - (1/(self.W[0][0]*self.W[1][1] - self.W[1][0]*self.W[0][1]))*(-self.W[1][0]*(Re_m*vec.y - vec.ζ) + self.W[0][0]*(Re_n*vec.θ - vec.φ))
 
 
 
