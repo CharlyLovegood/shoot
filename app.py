@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # ----------- CONSTANTS -----------
 # Grid parameters
 H = -0.0001
-ε = 0.01
+ε = 0.00001
 # Parameters
 Re_m = 10
 Re_n = 5
@@ -59,8 +59,8 @@ class var_vector:
 
 
 class parameter:
-    η_1 = 0.06
-    η_2 = 0.38
+    η_1 = 0.5
+    η_2 = 0.5
 
 
 
@@ -84,7 +84,8 @@ class shoot:
 
 
     def roll_back(self):
-        self.res.η_1, self.res.η_2 = self.res1.η_1, self.res1.η_2
+        self.res.η_1 = self.res1.η_1
+        self.res.η_2 = self.res1.η_2
         self.vec.roll_back(self.res.η_1, self.res.η_2)
         self.vec1.roll_back(self.res.η_1, self.res.η_2)
         self.var_vec.roll_back()
@@ -105,13 +106,13 @@ class shoot:
         k2 = self.count_k_vec()
         self.runge_vec_prepare(H/2, k2)
         k3 = self.count_k_vec()
-        self.runge_vec_prepare(0, k3)
+        self.runge_vec_prepare(H, k3)
         k4 = self.count_k_vec()
 
-        self.vec.y = self.vec.y + H/6*(k1.y + 2*k2.y + 2*k3.y + k4.y)
-        self.vec.ζ = self.vec.ζ + H/6*(k1.ζ + 2*k2.ζ + 2*k3.ζ + k4.ζ)
-        self.vec.θ = self.vec.θ + H/6*(k1.θ + 2*k2.θ + 2*k3.θ + k4.θ)
-        self.vec.φ = self.vec.φ + H/6*(k1.φ + 2*k2.φ + 2*k3.φ + k4.φ)
+        self.vec.y = self.vec.y + (H/6)*(k1.y + 2*k2.y + 2*k3.y + k4.y)
+        self.vec.ζ = self.vec.ζ + (H/6)*(k1.ζ + 2*k2.ζ + 2*k3.ζ + k4.ζ)
+        self.vec.θ = self.vec.θ + (H/6)*(k1.θ + 2*k2.θ + 2*k3.θ + k4.θ)
+        self.vec.φ = self.vec.φ + (H/6)*(k1.φ + 2*k2.φ + 2*k3.φ + k4.φ)
         self.vec.z = self.vec.z + H
 
         self.vec1.y = self.vec.y
@@ -153,17 +154,17 @@ class shoot:
         k2 = self.count_k_var_vec()
         self.runge_var_vec_prepare(H/2, k2)
         k3 = self.count_k_var_vec()
-        self.runge_var_vec_prepare(0, k3)
+        self.runge_var_vec_prepare(H, k3)
         k4 = self.count_k_var_vec()
 
-        self.var_vec.pθ_1 = self.var_vec.pθ_1 + H/6*(k1.pθ_1 + 2*k2.pθ_1 + 2*k3.pθ_1 + k4.pθ_1)
-        self.var_vec.pθ_2 = self.var_vec.pθ_2 + H/6*(k1.pθ_2 + 2*k2.pθ_2 + 2*k3.pθ_2 + k4.pθ_2)
-        self.var_vec.sθ_1 = self.var_vec.sθ_1 + H/6*(k1.sθ_1 + 2*k2.sθ_1 + 2*k3.sθ_1 + k4.sθ_1)
-        self.var_vec.sθ_2 = self.var_vec.sθ_2 + H/6*(k1.sθ_2 + 2*k2.sθ_2 + 2*k3.sθ_2 + k4.sθ_2)
-        self.var_vec.py_1 = self.var_vec.py_1 + H/6*(k1.py_1 + 2*k2.py_1 + 2*k3.py_1 + k4.py_1)
-        self.var_vec.py_2 = self.var_vec.py_2 + H/6*(k1.py_2 + 2*k2.py_2 + 2*k3.py_2 + k4.py_2)
-        self.var_vec.sy_1 = self.var_vec.sy_1 + H/6*(k1.sy_1 + 2*k2.sy_1 + 2*k3.sy_1 + k4.sy_1)
-        self.var_vec.sy_2 = self.var_vec.sy_2 + H/6*(k1.sy_2 + 2*k2.sy_2 + 2*k3.sy_2 + k4.sy_2)
+        self.var_vec.pθ_1 = self.var_vec.pθ_1 + (H/6)*(k1.pθ_1 + 2*k2.pθ_1 + 2*k3.pθ_1 + k4.pθ_1)
+        self.var_vec.pθ_2 = self.var_vec.pθ_2 + (H/6)*(k1.pθ_2 + 2*k2.pθ_2 + 2*k3.pθ_2 + k4.pθ_2)
+        self.var_vec.sθ_1 = self.var_vec.sθ_1 + (H/6)*(k1.sθ_1 + 2*k2.sθ_1 + 2*k3.sθ_1 + k4.sθ_1)
+        self.var_vec.sθ_2 = self.var_vec.sθ_2 + (H/6)*(k1.sθ_2 + 2*k2.sθ_2 + 2*k3.sθ_2 + k4.sθ_2)
+        self.var_vec.py_1 = self.var_vec.py_1 + (H/6)*(k1.py_1 + 2*k2.py_1 + 2*k3.py_1 + k4.py_1)
+        self.var_vec.py_2 = self.var_vec.py_2 + (H/6)*(k1.py_2 + 2*k2.py_2 + 2*k3.py_2 + k4.py_2)
+        self.var_vec.sy_1 = self.var_vec.sy_1 + (H/6)*(k1.sy_1 + 2*k2.sy_1 + 2*k3.sy_1 + k4.sy_1)
+        self.var_vec.sy_2 = self.var_vec.sy_2 + (H/6)*(k1.sy_2 + 2*k2.sy_2 + 2*k3.sy_2 + k4.sy_2)
         self.var_vec.z = self.var_vec.z + H
 
         self.var_vec1.pθ_1 = self.var_vec.pθ_1
@@ -182,14 +183,14 @@ class shoot:
         vec = self.vec
         k = var_vector()
         
-        k.py_1 = var_vec.py_1
-        k.py_2 = var_vec.py_2
-        k.pθ_1 = var_vec.pθ_1
-        k.pθ_2 = var_vec.pθ_2
-        k.sy_1 = (var_vec.sy_1 + var_vec.py_1*(Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_1 * Da * (1-vec.y)*np.exp((γ*vec.θ)/(γ + vec.θ)) * γ*γ/(γ + vec.θ)/(γ + vec.θ))*Re_m 
-        k.sy_2 = (var_vec.sy_2 + var_vec.py_2*(Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_2 * Da * (1-vec.y)*np.exp((γ*vec.θ)/(γ + vec.θ)) * γ*γ/(γ + vec.θ)/(γ + vec.θ))*Re_m
-        k.sθ_1 = (var_vec.sθ_1 + var_vec.py_1*(B*Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_1 * (B*Da*(1-vec.y)*np.exp((γ*vec.θ)/(γ+vec.θ))*γ*γ/(γ+vec.θ)/(γ+vec.θ) - β))*Re_n
-        k.sθ_2 = (var_vec.sθ_2 + var_vec.py_2*(B*Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_2 * (B*Da*(1-vec.y)*np.exp((γ*vec.θ)/(γ+vec.θ))*γ*γ/(γ+vec.θ)/(γ+vec.θ) - β))*Re_n
+        k.py_1 = var_vec.sy_1
+        k.py_2 = var_vec.sy_2
+        k.pθ_1 = var_vec.sθ_1
+        k.pθ_2 = var_vec.sθ_2
+        k.sy_1 = (var_vec.sy_1 - var_vec.py_1*(-Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_1 * Da * (1-vec.y)*np.exp((γ*vec.θ)/(γ + vec.θ)) * γ*γ/((γ + vec.θ)*(γ + vec.θ)))*Re_m 
+        k.sy_2 = (var_vec.sy_2 - var_vec.py_2*(-Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_2 * Da * (1-vec.y)*np.exp((γ*vec.θ)/(γ + vec.θ)) * γ*γ/(γ + vec.θ)/(γ + vec.θ))*Re_m
+        k.sθ_1 = (var_vec.sθ_1 - var_vec.py_1*(-B*Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_1 * (B*Da*(1-vec.y)*np.exp((γ*vec.θ)/(γ+vec.θ))*γ*γ/(γ+vec.θ)/(γ+vec.θ) - β))*Re_n
+        k.sθ_2 = (var_vec.sθ_2 - var_vec.py_2*(-B*Da*np.exp((γ*vec.θ)/(γ + vec.θ))) - var_vec.pθ_2 * (B*Da*(1-vec.y)*np.exp((γ*vec.θ)/(γ+vec.θ))*γ*γ/(γ+vec.θ)/(γ+vec.θ) - β))*Re_n
         k.z = var_vec.z
 
         return k
